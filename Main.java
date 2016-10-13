@@ -1,3 +1,6 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class Main {
 	
    public static void main(String[] args) {
@@ -13,8 +16,13 @@ public class Main {
 		   }
 	   }
 	   
-	   mainGrid[1][1].SetValue('A');
-	   System.out.println(mainGrid[1][1].GetValue());
+	   mainGrid[3][3].SetValue('A');
+	   mainGrid[6][6].SetValue('B');
+	   
+	   Queue<Square> mainQueue = new LinkedList<Square>();
+	   mainQueue.add(mainGrid[3][3]);
+	   
+	   
 	  
    }
 }
