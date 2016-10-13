@@ -1,4 +1,4 @@
-public class Sqaure {
+public class Square {
 	
 	public int xPos;
 	public int yPos;
