@@ -3,18 +3,28 @@ public class Square {
 	public int xPos;
 	public int yPos;
 	private char value;
+    private boolean blocked;
 	
-	public Square(int x, int y) {
-		this.xPos = x;
-		this.yPos = y;
+	public Square(boolean b) {
+        blocked = b;
+        value = '0';
 	}
+    
+    public void setBlocked(boolean b) {
+        blocked = b;
+    }
 	
-	public void SetValue(char x) {
-		this.value = x;
+	public void setValue(char x) {
+		value = x;
 	}
+    
+    public boolean getBlocked() {
+        return blocked;
+    }
 	
-	public char GetValue() {
-		return this.value;
+	public char getValue() {
+		if(blocked) return '#';
+        else return value;
 	}
 	
 }
