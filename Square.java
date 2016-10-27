@@ -2,19 +2,19 @@ public class Square {
 	
 	public int xPos;
 	public int yPos;
-	private char value;
+	private String value;
     private boolean blocked;
 	
 	public Square(boolean b) {
         blocked = b;
-        value = '*';
+        value = "*";
 	}
     
     public void setBlocked(boolean b) {
         blocked = b;
     }
 	
-	public void setValue(char x) {
+	public void setValue(String x) {
 		value = x;
 	}
     
@@ -22,9 +22,8 @@ public class Square {
         return blocked;
     }
 	
-	public char getValue() {
-		if(blocked) return '#';
-        else return value;
+	public String getValue() {
+		return value;
 	}
 	
 }
