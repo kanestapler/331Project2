@@ -46,29 +46,41 @@ public class Board {
     }
     
     public void calculatePath() {
-        calculateValue((int)start.getX(), (int)start.getY(), 0);
+        List<Point> list = new ArrayList<>();
+        list.add(start);
+        calculateValue(list, 0);
         grid[(int)start.getX()][(int)start.getY()].setValue("A");
         grid[(int)end.getX()][(int)end.getY()].setValue("B");
     }
     
-    private void calculateValue(int x, int y, int v) {
-        if(isLegal(x, y)) {
-            List<Point> list = new ArrayList<>();
-            if(isLegal(x+1,y) && !grid[x+1][y].getBlocked()) list.add(new Point(x+1, y));
-            if(isLegal(x-1,y) && !grid[x-1][y].getBlocked()) list.add(new Point(x-1, y));
-            if(isLegal(x,y+1) && !grid[x][y+1].getBlocked()) list.add(new Point(x, y+1));
-            if(isLegal(x,y-1) && !grid[x][y-1].getBlocked()) list.add(new Point(x, y-1));
-            
-            for(int i = 0; i < list.size(); i++) {
-                Point point = list.get(i);
-                grid[(int)point.getX()][(int)point.getY()].setValue("" + (v+1));
-                grid[(int)point.getX()][(int)point.getY()].setBlocked(true);
-            }
-            for(int i = 0; i < list.size(); i++) {
-                Point point = list.get(i);
-                calculateValue((int)point.getX(), (int)point.getY(), v+1);
+    private void calculateValue(List<Point> list, int v) {
+        List<Point> newList = new ArrayList<>();
+        for(int i = 0; i < list.size(); i++) {
+            if(isLegal((int)list.get(i).getX(), (int)list.get(i).getY())) {
+                int x = (int)list.get(i).getX();
+                int y = (int)list.get(i).getY();
+                grid[x][y].setValue("" + v);
+                grid[x][y].setBlocked(true);
+                
+                if(isLegal(x+1,y) && !grid[x+1][y].getBlocked()) {
+                    Point point = new Point(x+1, y);
+                    if(!newList.contains(point)) newList.add(point);
+                }
+                if(isLegal(x-1,y) && !grid[x-1][y].getBlocked()) {
+                    Point point = new Point(x-1, y);
+                    if(!newList.contains(point)) newList.add(point);
+                }
+                if(isLegal(x,y+1) && !grid[x][y+1].getBlocked()) {
+                    Point point = new Point(x, y+1);
+                    if(!newList.contains(point)) newList.add(point);
+                }
+                if(isLegal(x,y-1) && !grid[x][y-1].getBlocked()) {
+                    Point point = new Point(x, y-1);
+                    if(!newList.contains(point)) newList.add(point);
+                }
             }
         }
+        if(newList.size() > 0) { calculateValue(newList, v+1); }
     }
     
     private boolean isLegal(int x, int y) {
