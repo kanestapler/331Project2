@@ -7,7 +7,7 @@ public class Square {
 	
 	public Square(boolean b) {
         blocked = b;
-        value = '0';
+        value = '*';
 	}
     
     public void setBlocked(boolean b) {
