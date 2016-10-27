@@ -47,28 +47,23 @@ public class Board {
     
     public void calculatePath() {
         calculateValue((int)start.getX(), (int)start.getY(), 0);
-        grid[(int)start.getX()][(int)start.getX()].setValue("A");
+        grid[(int)start.getX()][(int)start.getY()].setValue("A");
+        grid[(int)end.getX()][(int)end.getY()].setValue("B");
     }
     
     private void calculateValue(int x, int y, int v) {
         if(isLegal(x, y)) {
             List<Point> list = new ArrayList<>();
-            if(isLegal(x+1,y) && grid[x+1][y].getBlocked()) list.add(new Point(x+1, y));
-            if(isLegal(x-1,y) && grid[x-1][y].getBlocked()) list.add(new Point(x-1, y));
-            if(isLegal(x,y+1) && grid[x][y+1].getBlocked()) list.add(new Point(x, y+1));
-            if(isLegal(x,y-1) && grid[x][y-1].getBlocked()) list.add(new Point(x, y-1));
-            
-            int lowest = v;
+            if(isLegal(x+1,y) && !grid[x+1][y].getBlocked()) list.add(new Point(x+1, y));
+            if(isLegal(x-1,y) && !grid[x-1][y].getBlocked()) list.add(new Point(x-1, y));
+            if(isLegal(x,y+1) && !grid[x][y+1].getBlocked()) list.add(new Point(x, y+1));
+            if(isLegal(x,y-1) && !grid[x][y-1].getBlocked()) list.add(new Point(x, y-1));
             
             for(int i = 0; i < list.size(); i++) {
                 Point point = list.get(i);
-                int compare = Integer.parseInt(grid[(int)point.getX()][(int)point.getY()].getValue());
-                if(lowest > compare) lowest = compare;
+                grid[(int)point.getX()][(int)point.getY()].setValue("" + (v+1));
+                grid[(int)point.getX()][(int)point.getY()].setBlocked(true);
             }
-            
-            grid[x][y].setValue("" + lowest);
-            grid[x][y].setBlocked(true);
-            
             for(int i = 0; i < list.size(); i++) {
                 Point point = list.get(i);
                 calculateValue((int)point.getX(), (int)point.getY(), v+1);
