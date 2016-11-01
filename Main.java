@@ -31,7 +31,7 @@ public class Main {
        
        board.setBlocked(list);
        
-       board.calculatePath();
+       board.Run();
        
        System.out.println(board.toString());
    }
