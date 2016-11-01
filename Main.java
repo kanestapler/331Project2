@@ -4,8 +4,8 @@ import java.awt.Point;
 public class Main {
 	
    public static void main(String[] args) {
-       int xSize = 7;
-	   int ySize = 7;
+       int xSize = 12;
+	   int ySize = 12;
 	   
 	   Board board = new Board(xSize, ySize);
 	   board.setStart(2, 1);
@@ -34,5 +34,7 @@ public class Main {
        board.Run();
        
        System.out.println(board.toString());
+       
+       GridManager gui = new GridManager(xSize, ySize, board);
    }
 }

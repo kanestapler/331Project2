@@ -56,8 +56,8 @@ public class Board {
         		top = grid[currentSpot.xVal][currentSpot.yVal-1];
         		if (DidIFindTheEnd(top)) {
         			haveIhitTheEnd = true;
+        			break;
         		} else if (IsThisEmpty(top)) {
-        			System.out.println(currentSpot.getValue());
         			top.setValue(Integer.parseInt(currentSpot.getValue()) + 1);
         			searchingQueue.add(top);
         		}
@@ -66,6 +66,7 @@ public class Board {
     			bottom = grid[currentSpot.xVal][currentSpot.yVal+1];
         		if (DidIFindTheEnd(bottom)) {
         			haveIhitTheEnd = true;
+        			break;
         		} else if (IsThisEmpty(bottom)) {
         			bottom.setValue(Integer.parseInt(currentSpot.getValue()) + 1);
         			searchingQueue.add(bottom);
@@ -75,6 +76,7 @@ public class Board {
     			left = grid[currentSpot.xVal-1][currentSpot.yVal];
         		if (DidIFindTheEnd(left)) {
         			haveIhitTheEnd = true;
+        			break;
         		} else if (IsThisEmpty(left)) {
         			left.setValue(Integer.parseInt(currentSpot.getValue()) + 1);
         			searchingQueue.add(left);
@@ -84,6 +86,7 @@ public class Board {
     			right = grid[currentSpot.xVal+1][currentSpot.yVal];
         		if (DidIFindTheEnd(right)) {
         			haveIhitTheEnd = true;
+        			break;
         		} else if (IsThisEmpty(right)) {
         			right.setValue(Integer.parseInt(currentSpot.getValue()) + 1);
         			searchingQueue.add(right);
@@ -91,6 +94,7 @@ public class Board {
     		}
     		
     	}
+    	Backtrack();
     }
 
 
@@ -109,6 +113,45 @@ public class Board {
     	return (here.getValue() == "X");
     		
     }
+	
+	private void Backtrack() {
+		boolean haveIhitTheStart = false;
+		Stack<Square> searchingStack = new Stack<>();
+		searchingStack.add(grid[end.x][end.y]);
+    	while(!haveIhitTheStart) {
+    		Square currentSpot = searchingStack.pop();
+    		//currentSpot.setValue("Z");
+    		
+    		Square lowestSquare = new Square(false);
+    		
+    		Square top = new Square(false);
+    		Square bottom = new Square(false);
+    		Square left = new Square(false);
+    		Square right = new Square(false);
+    		
+    		if (IsThisInBounds(currentSpot.xVal, currentSpot.yVal-1)) {
+        		top = grid[currentSpot.xVal][currentSpot.yVal-1];
+    		}
+    		if (IsThisInBounds(currentSpot.xVal, currentSpot.yVal+1)) {
+    			bottom = grid[currentSpot.xVal][currentSpot.yVal+1];
+    		}
+    		if (IsThisInBounds(currentSpot.xVal-1, currentSpot.yVal)) {
+    			left = grid[currentSpot.xVal-1][currentSpot.yVal];
+    		}
+    		if (IsThisInBounds(currentSpot.xVal+1, currentSpot.yVal)) {
+    			right = grid[currentSpot.xVal+1][currentSpot.yVal];
+    		}
+    		
+    		lowestSquare = GetLowestValue(top, bottom, left, right);
+    		
+    		if (lowestSquare.getValue().equals("0")) {
+    			haveIhitTheStart = true;
+    		}
+    		searchingStack.push(lowestSquare);
+    		
+    	}
+		
+	}
     
     
     
@@ -116,6 +159,52 @@ public class Board {
     
     
     
+	private Square GetLowestValue(Square top, Square bottom, Square left, Square right) {
+	
+		int topInt = Integer.MAX_VALUE;
+		int bottomInt = Integer.MAX_VALUE;
+		int leftInt = Integer.MAX_VALUE;
+		int rightInt = Integer.MAX_VALUE;
+		
+		if (top.getValue().matches("^-?\\d+$")) {
+			topInt = Integer.parseInt(top.getValue());
+		}
+		if (bottom.getValue().matches("^-?\\d+$")) {
+			bottomInt = Integer.parseInt(bottom.getValue());
+		}
+		if (left.getValue().matches("^-?\\d+$")) {
+			leftInt = Integer.parseInt(left.getValue());
+		}
+		if (right.getValue().matches("^-?\\d+$")) {
+			rightInt = Integer.parseInt(right.getValue());
+		}
+		
+		if (topInt <= bottomInt && topInt <= leftInt && topInt <= rightInt) {
+			if (topInt != 0) {
+				top.setValue("-");
+			}
+			return top;
+		} else if (bottomInt <= topInt && bottomInt <= leftInt && bottomInt <= rightInt) {
+			if (bottomInt != 0) {
+				bottom.setValue("-");
+			}
+			return bottom;
+		} else if (leftInt <= topInt && leftInt <= bottomInt && leftInt <= rightInt) {
+			if (leftInt != 0) {
+				left.setValue("|");
+			}
+			return left;
+		} else if (rightInt <= topInt && rightInt <= bottomInt && rightInt <= leftInt) {
+			if (rightInt != 0) {
+				right.setValue("|");
+			}
+			return right;
+		}
+		
+		return null;
+		
+	}
+
 //    public void calculatePath() {
 //        List<Point> list = new ArrayList<>();
 //        list.add(start);
@@ -162,5 +251,9 @@ public class Board {
            s += "\n";
         }
         return s;
+    }
+    
+    public String getValue(int x, int y) {
+    	return grid[x][y].getValue();
     }
 }
